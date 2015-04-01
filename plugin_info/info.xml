@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>newtifrypro</id>
+    <name>NewtifryPro</name>
+    <description>Plugin pour utiliser NewtifryPro</description>
+    <icon>fa fa-signal</icon>
+    <licence>AGPL</licence>
+    <author>thunder</author>
+    <installation>Aucune</installation>
+    <require>1.10</require>
+    <version>1.0</version>
+    <category>communication</category>
+</info>
+
