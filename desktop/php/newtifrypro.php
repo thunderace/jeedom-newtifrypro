@@ -3,6 +3,7 @@ if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
 sendVarToJS('eqType', 'newtifrypro');
+$eqLogics = eqLogic::byType('newtifrypro');
 ?>
 
 <div class="row row-overflow">
@@ -12,7 +13,7 @@ sendVarToJS('eqType', 'newtifrypro');
                 <a class="btn btn-default eqLogicAction" style="width : 100%;margin-top : 5px;margin-bottom: 5px;" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter un équipement}}</a>
                 <li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
                 <?php
-                foreach (eqLogic::byType('newtifrypro') as $eqLogic) {
+                foreach ($eqLogics as $eqLogic) {
                     echo '<li class="cursor li_eqLogic" data-eqLogic_id="' . $eqLogic->getId() . '"><a>' . $eqLogic->getHumanName() . '</a></li>';
                 }
                 ?>
@@ -45,9 +46,9 @@ sendVarToJS('eqType', 'newtifrypro');
                     </div>
                 </div>
 				<div class="form-group">
-                    <label class="col-lg-3 control-label">{{Source Key}}</label>
+                    <label class="col-lg-3 control-label">{{API Key}}</label>
                     <div class="col-lg-3">
-                        <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="devid" placeholder="{{key}}"/>
+                        <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="apikey" placeholder="{{APIkey}}"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -64,15 +65,11 @@ sendVarToJS('eqType', 'newtifrypro');
         </form>
 
         <legend>{{NewtifryPro}}</legend>
-        <div class="alert alert-info">
-            {{Le paramètre priorité est optionnel : 0 : no priority (défaut) - 1 : info - 2 : warning - 3 : alert}}
-        </div>
-
         <a class="btn btn-success btn-sm cmdAction" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter une commande newtifrypro}}</a><br/><br/>
         <table id="table_cmd" class="table table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>{{Nom}}</th><th>{{Priorité}}</th><th></th>
+                    <th>{{Nom}}</th><th>{{DevId}}</th><th></th>
                 </tr>
             </thead>
             <tbody>

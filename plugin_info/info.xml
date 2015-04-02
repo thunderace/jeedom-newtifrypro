@@ -4,8 +4,8 @@
     <name>NewtifryPro</name>
     <description>Plugin pour utiliser NewtifryPro</description>
     <icon>fa fa-signal</icon>
-    <licence>AGPL</licence>
-    <author>thunder</author>
+    <licence>MIT</licence>
+    <author>Arnaud LAURENT</author>
     <installation>Aucune</installation>
     <require>1.10</require>
     <version>1.0</version>

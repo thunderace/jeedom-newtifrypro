@@ -1,0 +1,6 @@
+Fonctionnement :
+- Dans Jeedom, créer un nouvel équipement et le configurer : 
+  - Entrer l'APIKey dans le champ 'API Key'
+  - Ajouter une commande en lui donnant un nom et de copier/coller l'identifiant de l'appareil (deviceID) obtenu sur l'appareil Android
+
+Dans Jeedom vous aurez maintenant une commande de type message qui sera utilisable dans les scénarios.

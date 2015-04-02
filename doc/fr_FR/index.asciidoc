@@ -1,0 +1,13 @@
+:icons:
+== NewtifryPro
+
+=== Description
+Plugin permetant d'envoyer un message à NewtifryPro
+
+'''
+=== Configuration
+include::configuration.asciidoc[]
+
+'''
+=== FAQ
+include::faq.asciidoc[]

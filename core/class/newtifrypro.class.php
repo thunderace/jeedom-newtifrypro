@@ -19,10 +19,7 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
-define('NEWTIFRYADDR', 'https://newtifry.appspot.com/newtifry');
-define('GCMADDR', 'https://newtifry.appspot.com/newtifry');
-
-
+require_once ("NewtifryPro.php");
 
 class newtifrypro extends eqLogic {
     
@@ -42,23 +39,30 @@ class newtifryproCmd extends cmd {
         if ($newtifrypro->getConfiguration('apikey') == '') {
             throw new Exception('Api_Key ne peut etre vide');
         }
-        if ($newtifrypro->getConfiguration('devid') == '') {
+        if ($this->getConfiguration('devid') == '') {
             throw new Exception('Dev_id ne peut etre vide');
-        }
+        }        
     }
 
     public function execute($_options = null) {
-		$newtifrypro = $this->getEqLogic();
         if ($_options === null) {
-            throw new Exception(__('Les options de la fonction ne peuvent etre null', __FILE__));
+            throw new Exception(__('Les options de la fonction doivent être définis', __FILE__));
         }
-        if ($_options['title'] == '') {
-            $_options['title'] = __('Jeedom Notification', __FILE__);
+        if ($_options['source'] == '') {
+            $_options['source'] = __('Jeedom', __FILE__);
         }
-        $url = GCMADDR . '?source=' . trim($newtifrypro->getConfiguration('devid')) . '&title=' . urlencode($_options['title']) . '&message=' . urlencode($_options['message']) . '&priority=' . trim($this->getConfiguration('priority'));
-        $ch = curl_init($url);
-        curl_exec($ch);
-        curl_close($ch);
+        newtifryProPush(    $this->getConfiguration('apikey'),
+                            $this->getConfiguration('devid'), 
+                            $_options['title'], 
+                            'Jeedom Notification', 
+                            $_options['message'], 
+                            0, 
+                            NULL, 
+                            NULL, // image
+                            -1,  
+                            false,  
+                            0,  
+                            -1);
     }
 
 
