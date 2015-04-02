@@ -70,6 +70,13 @@ class newtifryproCmd extends cmd {
         if ($_options === null) {
             throw new Exception(__('Les options de la fonction doivent être définis', __FILE__));
         }
+        if ($_options['title'] == '') {
+            throw new Exception(__('Le message et le sujet ne peuvent être vide', __FILE__));
+        }
+        if ($_options['title'] == '') {
+            $_options['title'] = NULL;
+        }
+        
         $deviceIds = array();
         $deviceIds[] = $this->getConfiguration('devid');
         $result = newtifryProPush(    $this->getEqLogic()->getConfiguration('apikey'),
