@@ -1,5 +1,5 @@
 Fonctionnement :
-- Dans Jeedom, créer un nouvel équipement et le configurer : 
+  - Dans Jeedom, créer un nouvel équipement et le configurer : 
   - Entrer l'APIKey dans le champ 'API Key'
   - Ajouter une commande en lui donnant un nom et de copier/coller l'identifiant de l'appareil (deviceID) obtenu sur l'appareil Android
 
