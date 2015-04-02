@@ -1,39 +1,61 @@
 <?php
-
-/* This file is part of Jeedom.
- *
- * Jeedom is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Jeedom is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
- */
-
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
-require_once ("NewtifryPro.php");
+
+function iso8601() {
+  date_default_timezone_set("UTC");
+  $time=time();
+  return date("Y-m-d", $time) . 'T' . date("H:i:s", $time) .'.00:00';
+}
+
+function newtifryProPush( $apikey,
+                          $deviceIds,  
+                          $title, 
+                          $source = NULL, 
+                          $message = NULL) {
+  //Prepare variables
+  $GCM_URL = "https://android.googleapis.com/gcm/send";
+  $data = array ( "type" => "ntp_message",
+                  "timestamp" => iso8601(),
+                  "priority" => 0, 
+                  "title" => base64_encode($title));
+
+  if ($message) {
+    $data["message"] = base64_encode($message);
+  }
+  if ($source) {
+    $data["source"] = base64_encode($source);
+  }
+
+  $fields = array(  'registration_ids'  => $deviceIds,
+                    'data'              => $data);
+
+  $headers = array( 'Authorization: key=' . $apikey,
+                    'Content-Type: application/json');
+
+  // Open connection
+  $ch = curl_init();
+  // Set the url, number of POST vars, POST data
+  curl_setopt( $ch, CURLOPT_URL, $GCM_URL );
+  curl_setopt( $ch, CURLOPT_POST, true );
+  curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+  curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
+
+  // Execute post
+  $result = curl_exec($ch);
+  // Close connection
+  curl_close($ch);
+  //Return push response as array
+  return json_decode($result);
+}
 
 class newtifrypro extends eqLogic {
     
 }
 
 class newtifryproCmd extends cmd {
-    /*     * *************************Attributs****************************** */
-
-
-    /*     * ***********************Methode static*************************** */
-
-
-    /*     * *********************Methode d'instance************************* */
-
     public function preSave() {
 		$newtifrypro = $this->getEqLogic();
         if ($newtifrypro->getConfiguration('apikey') == '') {
@@ -48,25 +70,14 @@ class newtifryproCmd extends cmd {
         if ($_options === null) {
             throw new Exception(__('Les options de la fonction doivent être définis', __FILE__));
         }
-        if ($_options['source'] == '') {
-            $_options['source'] = __('Jeedom', __FILE__);
-        }
-        newtifryProPush(    $this->getConfiguration('apikey'),
-                            $this->getConfiguration('devid'), 
+        $deviceIds = array();
+        $deviceIds[] = $this->getConfiguration('devid');
+        $result = newtifryProPush(    $this->getEqLogic()->getConfiguration('apikey'),
+                            $deviceIds, 
                             $_options['title'], 
                             'Jeedom Notification', 
-                            $_options['message'], 
-                            0, 
-                            NULL, 
-                            NULL, // image
-                            -1,  
-                            false,  
-                            0,  
-                            -1);
+                            $_options['message']);
     }
-
-
-    /*     * **********************Getteur Setteur*************************** */
 }
 
 ?>
