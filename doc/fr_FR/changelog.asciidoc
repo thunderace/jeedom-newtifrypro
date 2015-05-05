@@ -1,0 +1,7 @@
+Stable  : 1.2
+
+*05/05/2015 _v1.2_
+
+- Correction du calcul de la date d'envoi pour ne plus modifier l'horodatage des logs
+- Ajout du changelog
+- orthographe dans la description et la configuration
