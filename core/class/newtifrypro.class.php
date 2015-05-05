@@ -4,9 +4,11 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 
 function iso8601() {
-  date_default_timezone_set("UTC");
+  // Suppress DateTime warnings
+  date_default_timezone_set(@date_default_timezone_get());
   $time=time();
-  return date("Y-m-d", $time) . 'T' . date("H:i:s", $time) .'.00:00';
+  // strange iso8601 formating for newtifry pro
+  return gmdate("Y-m-d", $time) . 'T' . gmdate("H:i:s", $time) .'.00:00';
 }
 
 function newtifryProPush( $apikey,
